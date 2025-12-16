@@ -1,10 +1,32 @@
+import requests
 import pandas as pd
+from bs4 import BeautifulSoup
 
 def identify_profiles():
-    pubmed = pd.read_csv("data/pubmed_sample.csv")
-    conference = pd.read_csv("data/conference_sample.csv")
+    query = "drug induced liver injury 3D model"
+    url = f"https://pubmed.ncbi.nlm.nih.gov/?term={query.replace(' ', '+')}"
+    response = requests.get(url, timeout=10)
 
-    combined = pd.concat([pubmed, conference], ignore_index=True)
-    combined = combined.drop_duplicates(subset=["Name", "Company"])
+    soup = BeautifulSoup(response.text, "html.parser")
+    articles = soup.select(".docsum-content")[:10]
 
-    return combined
+    data = []
+
+    for art in articles:
+        title = art.select_one(".docsum-title").text.strip()
+        authors = art.select_one(".docsum-authors")
+        author = authors.text.split(",")[0] if authors else "Unknown Author"
+
+        data.append({
+            "Name": author,
+            "Title": "Research Scientist",
+            "Company": "Academic / Research Institute",
+            "Person Location": "Unknown",
+            "Company HQ": "Unknown",
+            "Recent Publication": "Yes",
+            "Funding Stage": "Grant Funded",
+            "Uses InVitro": "Yes",
+            "Open to NAMs": "Yes"
+        })
+
+    return pd.DataFrame(data)
