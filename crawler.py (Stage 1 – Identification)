@@ -1,0 +1,10 @@
+import pandas as pd
+
+def identify_profiles():
+    pubmed = pd.read_csv("data/pubmed_sample.csv")
+    conference = pd.read_csv("data/conference_sample.csv")
+
+    combined = pd.concat([pubmed, conference], ignore_index=True)
+    combined = combined.drop_duplicates(subset=["Name", "Company"])
+
+    return combined
