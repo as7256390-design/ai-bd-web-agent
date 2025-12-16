@@ -1,0 +1,15 @@
+ai-bd-web-agent/
+│
+├── app.py
+├── crawler.py
+├── enrichment.py
+├── scoring.py
+├── requirements.txt
+├── README.md
+│
+├── data/
+│   ├── pubmed_sample.csv
+│   └── conference_sample.csv
+│
+└── output/
+    └── sample_ranked_leads.csv
