@@ -1,0 +1,38 @@
+def score_profiles(df):
+
+    scores = []
+
+    for _, row in df.iterrows():
+        score = 0
+
+        # Role Fit
+        if any(k in row["Title"] for k in ["Toxicology", "Safety", "Hepatic", "3D"]):
+            score += 30
+
+        # Company Intent
+        if row["Funding Stage"] in ["Series A", "Series B"]:
+            score += 20
+
+        # Technographic
+        if row["Uses InVitro"] == "Yes":
+            score += 15
+        if row["Open to NAMs"] == "Yes":
+            score += 10
+
+        # Location Hub
+        if row["Company HQ"] in [
+            "Boston", "Cambridge", "Basel", "Bay Area", "UK"
+        ]:
+            score += 10
+
+        # Scientific Intent
+        if row["Recent Publication"] == "Yes":
+            score += 40
+
+        scores.append(score)
+
+    df["Probability Score"] = scores
+    df = df.sort_values("Probability Score", ascending=False)
+    df["Rank"] = range(1, len(df) + 1)
+
+    return df
