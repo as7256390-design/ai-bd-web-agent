@@ -1,7 +1,7 @@
 def score_profiles(df):
     """
-    Applies a weighted 'Propensity to Buy' score (0–100)
-    based on business development signals provided in the brief.
+    Computes a weighted propensity-to-buy score (0–100)
+    for business development prioritization.
     """
 
     scores = []
@@ -9,25 +9,25 @@ def score_profiles(df):
     for _, row in df.iterrows():
         score = 0
 
-        # Role Fit: Decision-makers or strong influencers
+        # Role fit
         if any(k in row["Title"] for k in ["Toxicology", "Safety", "Hepatic", "3D", "Director"]):
             score += 30
 
-        # Company Intent: Availability of budget
+        # Funding / budget readiness
         if row["Funding Stage"] in ["Series A", "Series B", "Grant Funded"]:
             score += 20
 
-        # Technographic Readiness
+        # Technographic readiness
         if row["Uses InVitro"] == "Yes":
             score += 15
         if row["Open to NAMs"] == "Yes":
             score += 10
 
-        # Geographic Innovation Hubs
+        # Geographic innovation hubs
         if row["Company HQ"] in ["Boston", "Cambridge", "Basel", "Bay Area", "UK"]:
             score += 10
 
-        # Scientific Intent: Strongest indicator of near-term adoption
+        # Scientific intent
         if row["Recent Publication"] == "Yes":
             score += 40
 
