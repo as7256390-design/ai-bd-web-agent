@@ -1,3 +1,4 @@
+from crawler import identify_profiles
 import streamlit as st
 import pandas as pd
 from crawler import identify_profiles
